@@ -4,7 +4,7 @@ import os
 import urllib.parse
 
 # --- CONFIGURACIÓN ---
-TOKEN = os.getenv("LOYVERSE_TOKEN")
+TOKEN = "d3afc1d40fbc4265a0e6a54ebd2cdca7" 
 URL_ITEMS = "https://api.loyverse.com/v1.0/items"
 URL_INVENTARIO = "https://api.loyverse.com/v1.0/inventory"
 TELEFONO_TIENDA = "51997475790" 
@@ -185,7 +185,7 @@ with open("index.html", "w", encoding="utf-8") as f:
             </div>
         </div>
         <div class="text-center pb-5 text-muted small">
-            Actualizado automáticamente ✨
+            Gracias por comprar ✨
         </div>
     </body>
     </html>
