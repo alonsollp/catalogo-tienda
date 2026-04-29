@@ -1,76 +1,194 @@
 import requests
 import json
 import os
+import urllib.parse
 
+# --- CONFIGURACIÓN ---
 TOKEN = os.getenv("LOYVERSE_TOKEN")
-URL = "https://api.loyverse.com/v1.0/items"
+URL_ITEMS = "https://api.loyverse.com/v1.0/items"
+URL_INVENTARIO = "https://api.loyverse.com/v1.0/inventory"
+TELEFONO_TIENDA = "51997475790" 
 
 headers = {
     "Authorization": f"Bearer {TOKEN}",
     "Content-Type": "application/json"
 }
 
+def obtener_stock_real():
+    try:
+        res = requests.get(URL_INVENTARIO, headers=headers)
+        if res.status_code == 200:
+            data = res.json()
+            niveles = data.get('inventory_levels', [])
+            # Creamos un diccionario {variant_id: cantidad}
+            return {inv['variant_id']: inv['in_stock'] for inv in niveles}
+    except Exception as e:
+        print(f"Error inventario: {e}")
+    return {}
+
 def obtener_catalogo():
-    response = requests.get(URL, headers=headers)
-    
-    if response.status_code == 200:
-        data = response.json()
-        # Aquí tienes la lista de productos
-        items = data.get('items', [])
-        return items
-    else:
-        print(f"Error: {response.status_code}")
-        return None
-    
+    try:
+        res = requests.get(URL_ITEMS, headers=headers)
+        if res.status_code == 200:
+            return res.json().get('items', [])
+    except Exception as e:
+        print(f"Error catálogo: {e}")
+    return []
+
+# Ejecución de la lógica
+dict_stock = obtener_stock_real()
 items = obtener_catalogo()
-
-for p in items:
-    nombre = p.get('item_name', 'Sin nombre')
-    variantes = p.get('variants', [])
-    
-    if variantes:
-        # Usamos 'default_price' que es lo que vimos en tu JSON
-        precio = variantes[0].get('default_price', '0.00')
-    else:
-        precio = '0.00'
-        
-    print(f"Producto: {nombre:15} | Precio: S/. {precio}")
-
-
-
 
 with open("index.html", "w", encoding="utf-8") as f:
     f.write("""
-    <html>
+    <!DOCTYPE html>
+    <html lang="es">
     <head>
-        <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css'>
-        <style> .card-img-top { height: 250px; object-fit: cover; } </style>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Nuestro Catálogo</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+        <style>
+            :root { --primary-color: #25D366; --dark-color: #121b22; }
+            body { background-color: #f8f9fa; font-family: 'Segoe UI', system-ui, sans-serif; }
+            .navbar { background-color: var(--dark-color); color: white; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+            
+            /* Tarjeta uniforme y profesional */
+            .card { 
+                border: none; 
+                border-radius: 18px; 
+                overflow: hidden; 
+                box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+                height: 100%; 
+                display: flex; 
+                flex-direction: column; 
+                transition: transform 0.2s; 
+                background: white;
+            }
+            .card:active { transform: scale(0.97); }
+
+            .card-img-top { 
+                height: 160px; 
+                object-fit: contain; 
+                padding: 15px; 
+                background: #fff;
+            }
+
+            .card-body { 
+                padding: 15px; 
+                display: flex; 
+                flex-direction: column; 
+                flex-grow: 1; 
+                text-align: center;
+            }
+
+            .card-title { 
+                font-size: 0.95rem; 
+                font-weight: 600; 
+                text-transform: capitalize; 
+                color: #333;
+                margin-bottom: 10px;
+                height: 2.5em;
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+            }
+
+            .price-tag { 
+                font-size: 1.25rem; 
+                font-weight: 800; 
+                color: #111;
+                margin-top: auto; 
+                margin-bottom: 15px; 
+            }
+
+            .btn-whatsapp { 
+                background-color: var(--primary-color); 
+                color: white; 
+                border-radius: 12px; 
+                font-weight: 700; 
+                text-decoration: none; 
+                padding: 10px; 
+                border: none;
+                transition: 0.2s;
+            }
+            .btn-whatsapp:hover { background-color: #1ebc5a; color: white; }
+
+            .badge-stock { 
+                position: absolute; 
+                top: 12px; 
+                right: 12px; 
+                font-size: 0.7rem; 
+                padding: 5px 12px; 
+                border-radius: 50px; 
+                font-weight: 600;
+                z-index: 10;
+            }
+        </style>
     </head>
-    <body class='bg-light'>
-        <div class='container py-5'>
-            <h1 class='text-center mb-5'>Catálogo de Productos</h1>
-            <div class='row'>
+    <body>
+        <nav class="navbar sticky-top py-3 mb-4">
+            <div class="container d-flex justify-content-center">
+                <h5 class="mb-0 fw-bold">🛒 Nuestro Catálogo</h5>
+            </div>
+        </nav>
+
+        <div class="container pb-5">
+            <div class="row gx-3 gy-4">
     """)
-    
+
     for p in items:
         nombre = p.get('item_name', 'Producto')
         variantes = p.get('variants', [])
-        precio = variantes[0].get('default_price', '0.00') if variantes else '0.00'
-        # Usamos la URL de la imagen que vimos en tu JSON
-        imagen = p.get('image_url') or "https://via.placeholder.com/250"
+        v = variantes[0] if variantes else {}
+        v_id = v.get('variant_id')
+        precio = v.get('default_price', '0.00')
+        img = p.get('image_url') or "https://via.placeholder.com/200?text=Sin+Foto"
         
+        # Obtenemos stock del diccionario que ya validamos
+        stock_actual = dict_stock.get(v_id)
+
+        # Lógica de estados
+        if stock_actual is not None and float(stock_actual) <= 0:
+            badge = '<span class="badge bg-danger badge-stock">Agotado</span>'
+            btn_style = "opacity: 0.5; pointer-events: none; background-color: #6c757d;"
+            texto_boton = "Sin Stock"
+        else:
+            # Si no hay rastreo (None), ponemos disponible. Si hay, mostramos la cantidad.
+            info = f"Stock: {int(stock_actual)}" if stock_actual is not None else "Disponible"
+            badge = f'<span class="badge bg-success badge-stock">{info}</span>'
+            btn_style = ""
+            texto_boton = '<i class="bi bi-whatsapp me-2"></i>Pedir'
+
+        msg = urllib.parse.quote(f"¡Hola! Me interesa este producto: {nombre} (S/ {precio})")
+        link_wa = f"https://wa.me/{TELEFONO_TIENDA}?text={msg}"
+
         f.write(f"""
-            <div class='col-md-4 mb-4'>
-                <div class='card shadow-sm'>
-                    <img src='{imagen}' class='card-img-top'>
-                    <div class='card-body text-center'>
-                        <h5 class='card-title'>{nombre}</h5>
-                        <p class='text-primary fs-4'><strong>S/. {precio}</strong></p>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="card position-relative">
+                        {badge}
+                        <img src="{img}" class="card-img-top" loading="lazy">
+                        <div class="card-body">
+                            <div class="card-title">{nombre}</div>
+                            <div class="price-tag">S/ {precio}</div>
+                            <a href="{link_wa}" target="_blank" class="btn btn-whatsapp" style="{btn_style}">
+                                {texto_boton}
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
         """)
-    
-    f.write("</div></div></body></html>")
 
-print("¡Listo! Abre 'catalogo_digital.html' en tu navegador.")
+    f.write("""
+            </div>
+        </div>
+        <div class="text-center pb-5 text-muted small">
+            Actualizado automáticamente ✨
+        </div>
+    </body>
+    </html>
+    """)
+
+print(f"Éxito: Catálogo generado con {len(items)} productos.")

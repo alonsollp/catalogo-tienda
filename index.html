@@ -1,41 +1,162 @@
 
-    <html>
+    <!DOCTYPE html>
+    <html lang="es">
     <head>
-        <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css'>
-        <style> .card-img-top { height: 250px; object-fit: cover; } </style>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Nuestro Catálogo</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+        <style>
+            :root { --primary-color: #25D366; --dark-color: #121b22; }
+            body { background-color: #f8f9fa; font-family: 'Segoe UI', system-ui, sans-serif; }
+            .navbar { background-color: var(--dark-color); color: white; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+            
+            /* Tarjeta uniforme y profesional */
+            .card { 
+                border: none; 
+                border-radius: 18px; 
+                overflow: hidden; 
+                box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+                height: 100%; 
+                display: flex; 
+                flex-direction: column; 
+                transition: transform 0.2s; 
+                background: white;
+            }
+            .card:active { transform: scale(0.97); }
+
+            .card-img-top { 
+                height: 160px; 
+                object-fit: contain; 
+                padding: 15px; 
+                background: #fff;
+            }
+
+            .card-body { 
+                padding: 15px; 
+                display: flex; 
+                flex-direction: column; 
+                flex-grow: 1; 
+                text-align: center;
+            }
+
+            .card-title { 
+                font-size: 0.95rem; 
+                font-weight: 600; 
+                text-transform: capitalize; 
+                color: #333;
+                margin-bottom: 10px;
+                height: 2.5em;
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+            }
+
+            .price-tag { 
+                font-size: 1.25rem; 
+                font-weight: 800; 
+                color: #111;
+                margin-top: auto; 
+                margin-bottom: 15px; 
+            }
+
+            .btn-whatsapp { 
+                background-color: var(--primary-color); 
+                color: white; 
+                border-radius: 12px; 
+                font-weight: 700; 
+                text-decoration: none; 
+                padding: 10px; 
+                border: none;
+                transition: 0.2s;
+            }
+            .btn-whatsapp:hover { background-color: #1ebc5a; color: white; }
+
+            .badge-stock { 
+                position: absolute; 
+                top: 12px; 
+                right: 12px; 
+                font-size: 0.7rem; 
+                padding: 5px 12px; 
+                border-radius: 50px; 
+                font-weight: 600;
+                z-index: 10;
+            }
+        </style>
     </head>
-    <body class='bg-light'>
-        <div class='container py-5'>
-            <h1 class='text-center mb-5'>Catálogo de Productos</h1>
-            <div class='row'>
+    <body>
+        <nav class="navbar sticky-top py-3 mb-4">
+            <div class="container d-flex justify-content-center">
+                <h5 class="mb-0 fw-bold">🛒 Nuestro Catálogo</h5>
+            </div>
+        </nav>
+
+        <div class="container pb-5">
+            <div class="row gx-3 gy-4">
     
-            <div class='col-md-4 mb-4'>
-                <div class='card shadow-sm'>
-                    <img src='https://via.placeholder.com/250' class='card-img-top'>
-                    <div class='card-body text-center'>
-                        <h5 class='card-title'>yogur</h5>
-                        <p class='text-primary fs-4'><strong>S/. 3.0</strong></p>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="card position-relative">
+                        <span class="badge bg-success badge-stock">Stock: 20</span>
+                        <img src="https://api.loyverse.com/image/635715fb-25ce-48e7-bb0a-314d218d5c1d" class="card-img-top" loading="lazy">
+                        <div class="card-body">
+                            <div class="card-title">cartuchera</div>
+                            <div class="price-tag">S/ 23.0</div>
+                            <a href="https://wa.me/51997475790?text=%C2%A1Hola%21%20Me%20interesa%20este%20producto%3A%20cartuchera%20%28S/%2023.0%29" target="_blank" class="btn btn-whatsapp" style="">
+                                <i class="bi bi-whatsapp me-2"></i>Pedir
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
         
-            <div class='col-md-4 mb-4'>
-                <div class='card shadow-sm'>
-                    <img src='https://via.placeholder.com/250' class='card-img-top'>
-                    <div class='card-body text-center'>
-                        <h5 class='card-title'>leche</h5>
-                        <p class='text-primary fs-4'><strong>S/. 9.0</strong></p>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="card position-relative">
+                        <span class="badge bg-success badge-stock">Stock: 23</span>
+                        <img src="https://api.loyverse.com/image/2b3c3d7e-f1f9-4da1-b67f-144866844c6f" class="card-img-top" loading="lazy">
+                        <div class="card-body">
+                            <div class="card-title">yogur</div>
+                            <div class="price-tag">S/ 3.0</div>
+                            <a href="https://wa.me/51997475790?text=%C2%A1Hola%21%20Me%20interesa%20este%20producto%3A%20yogur%20%28S/%203.0%29" target="_blank" class="btn btn-whatsapp" style="">
+                                <i class="bi bi-whatsapp me-2"></i>Pedir
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
         
-            <div class='col-md-4 mb-4'>
-                <div class='card shadow-sm'>
-                    <img src='https://api.loyverse.com/image/d928899d-4f04-4df9-9888-09663e15f045' class='card-img-top'>
-                    <div class='card-body text-center'>
-                        <h5 class='card-title'>Axel</h5>
-                        <p class='text-primary fs-4'><strong>S/. 15.0</strong></p>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="card position-relative">
+                        <span class="badge bg-success badge-stock">Stock: 30</span>
+                        <img src="https://api.loyverse.com/image/56994bd2-471a-4cae-8823-e86a5eb7b553" class="card-img-top" loading="lazy">
+                        <div class="card-body">
+                            <div class="card-title">leche</div>
+                            <div class="price-tag">S/ 9.0</div>
+                            <a href="https://wa.me/51997475790?text=%C2%A1Hola%21%20Me%20interesa%20este%20producto%3A%20leche%20%28S/%209.0%29" target="_blank" class="btn btn-whatsapp" style="">
+                                <i class="bi bi-whatsapp me-2"></i>Pedir
+                            </a>
+                        </div>
                     </div>
                 </div>
+        
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="card position-relative">
+                        <span class="badge bg-danger badge-stock">Agotado</span>
+                        <img src="https://api.loyverse.com/image/d928899d-4f04-4df9-9888-09663e15f045" class="card-img-top" loading="lazy">
+                        <div class="card-body">
+                            <div class="card-title">Axel</div>
+                            <div class="price-tag">S/ 15.0</div>
+                            <a href="https://wa.me/51997475790?text=%C2%A1Hola%21%20Me%20interesa%20este%20producto%3A%20Axel%20%28S/%2015.0%29" target="_blank" class="btn btn-whatsapp" style="opacity: 0.5; pointer-events: none; background-color: #6c757d;">
+                                Sin Stock
+                            </a>
+                        </div>
+                    </div>
+                </div>
+        
             </div>
-        </div></div></body></html>
+        </div>
+        <div class="text-center pb-5 text-muted small">
+            Actualizado automáticamente ✨
+        </div>
+    </body>
+    </html>
+    
