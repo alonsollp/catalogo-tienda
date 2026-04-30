@@ -5,9 +5,7 @@ import urllib.parse
 from datetime import datetime
 
 # --- CONFIGURACIÓN ---
-# Si lo usas local, puedes poner el token directo: TOKEN = "tu_token_aqui"
-TOKEN = "d3afc1d40fbc4265a0e6a54ebd2cdca7"
-#os.getenv("LOYVERSE_TOKEN")
+TOKEN = os.getenv("LOYVERSE_TOKEN")
 URL_ITEMS = "https://api.loyverse.com/v1.0/items"
 URL_INVENTARIO = "https://api.loyverse.com/v1.0/inventory"
 TELEFONO_TIENDA = "51997475790" 
