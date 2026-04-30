@@ -20,7 +20,6 @@ def obtener_stock_real():
         res = requests.get(URL_INVENTARIO, headers=headers)
         if res.status_code == 200:
             data = res.json()
-            # Usamos 'inventory_levels' que es el campo real de la API
             niveles = data.get('inventory_levels', [])
             return {inv['variant_id']: inv['in_stock'] for inv in niveles}
     except Exception as e:
@@ -167,7 +166,6 @@ with open("index.html", "w", encoding="utf-8") as f:
         if image_url:
             display_media = f'<img src="{image_url}" class="card-img-top" loading="lazy">'
         else:
-            # Icono de caja calada cuando no hay foto
             display_media = '<i class="bi bi-box-seam no-image-icon"></i>'
         
         # --- LÓGICA DE STOCK ---
