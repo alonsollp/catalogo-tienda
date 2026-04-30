@@ -1,7 +1,7 @@
 name: Actualizar Catalogo
 on:
   schedule:
-    - cron: '0 * * * *' # Corre cada hora
+    - cron: '*/15 * * * *' # Corre cada 15 minutos
   workflow_dispatch: # Botón para correrlo manual
 
 jobs:
