@@ -5,7 +5,8 @@ import urllib.parse
 from datetime import datetime
 
 # --- CONFIGURACIÓN ---
-TOKEN = os.getenv("LOYVERSE_TOKEN")
+TOKEN = "d3afc1d40fbc4265a0e6a54ebd2cdca7"
+#os.getenv("LOYVERSE_TOKEN")
 URL_ITEMS = "https://api.loyverse.com/v1.0/items"
 URL_INVENTARIO = "https://api.loyverse.com/v1.0/inventory"
 TELEFONO_TIENDA = "51997475790" 
@@ -97,7 +98,7 @@ with open("index.html", "w", encoding="utf-8") as f:
     <body>
         <nav class="navbar sticky-top py-3 mb-4 text-center">
             <div class="container d-flex justify-content-center">
-                <h5 class="mb-0 fw-bold"><i class="bi bi-shop me-2"></i>Tienda de Tíos</h5>
+                <h5 class="mb-0 fw-bold"><i class="bi bi-shop me-2"></i>Catálogo de la Tienda</h5>
             </div>
         </nav>
 
